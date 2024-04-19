@@ -1,6 +1,8 @@
-import { View, Text, StyleSheet, Image } from 'react-native'
+import { View, Text, StyleSheet, Image, ScrollView } from 'react-native'
 import { MEALS } from '../data/dummy-data';
 import MealDetails from '../components/MealDetails';
+import Subtitle from '../components/MealDetail/Subtitle';
+import List from '../components/MealDetail/List';
 
 
 function FoodScreen({ route }) {
@@ -11,20 +13,23 @@ function FoodScreen({ route }) {
 
 
   return (
-    <View style={styles.container}>
-      <Image source={{ uri: selectedMeal.imageUrl }} style={styles.image} />
-      <Text></Text>
-      <MealDetails
-        affordability={selectedMeal.affordability}
-        complexity={selectedMeal.complexity}
-        duration={selectedMeal.duration} />
+    <ScrollView>
+      <View style={styles.container}>
+        <Image source={{ uri: selectedMeal.imageUrl }} style={styles.image} />
+        <Text style={styles.title}>{selectedMeal.title}</Text>
+        <MealDetails
+          affordability={selectedMeal.affordability}
+          complexity={selectedMeal.complexity}
+          duration={selectedMeal.duration}
+          textStyle={styles.detailText}
+        />
+        <Subtitle >Ingredients</Subtitle>
+        <List data={selectedMeal.ingredients} />
 
-      <Text>Ingredients</Text>
-      {selectedMeal.ingredients.map(ingredients => (<Text key={ingredients}>{ingredients}</Text>))}
-
-      <Text>Steps</Text>
-      {selectedMeal.steps.map(step => (<Text key={step}>{step}</Text>))}
-    </View>
+        <Subtitle > Steps</Subtitle>
+        <List data={selectedMeal.steps} />
+      </View>
+    </ScrollView>
   )
 }
 
@@ -38,6 +43,17 @@ const styles = StyleSheet.create({
   },
   image: {
     width: "100%",
-    height: 200,
+    height: 300,
   },
+  title: {
+    fontWeight: 'bold',
+    fontSize: 24,
+    textAlign: 'center',
+    margin: 8,
+    color: '#23FF1C'
+  },
+  detailText: {
+    color: '#2D6DECF9'
+  },
+
 })
