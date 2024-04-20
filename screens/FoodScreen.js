@@ -3,13 +3,25 @@ import { MEALS } from '../data/dummy-data';
 import MealDetails from '../components/MealDetails';
 import Subtitle from '../components/MealDetail/Subtitle';
 import List from '../components/MealDetail/List';
+import { useLayoutEffect } from 'react';
+import IconButton from '../components/IconButton';
 
 
-function FoodScreen({ route }) {
+function FoodScreen({ route, navigation }) {
   const mealId = route.params.mealId;
 
   const selectedMeal = MEALS.find((meal) => meal.id === mealId)
-  console.log(selectedMeal)
+  function headerPress() {
+    console.log(mealId)
+  }
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => {
+        return <IconButton icon='star' color='white' onPress={headerPress} />
+      }
+    })
+  }, [navigation, headerPress])
 
 
   return (
