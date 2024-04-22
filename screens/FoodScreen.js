@@ -3,22 +3,35 @@ import { MEALS } from '../data/dummy-data';
 import MealDetails from '../components/MealDetails';
 import Subtitle from '../components/MealDetail/Subtitle';
 import List from '../components/MealDetail/List';
-import { useLayoutEffect } from 'react';
+import { useContext, useLayoutEffect } from 'react';
 import IconButton from '../components/IconButton';
+import { FavoritesContext } from '../store/context/favorites-context';
 
 
 function FoodScreen({ route, navigation }) {
+  const favMealsCtx = useContext(FavoritesContext)
   const mealId = route.params.mealId;
+  const mealFavorite = favMealsCtx.ids.includes(mealId);
 
   const selectedMeal = MEALS.find((meal) => meal.id === mealId)
-  function headerPress() {
-    console.log(mealId)
+
+  function changeFavStat() {
+    if (mealFavorite) {
+      favMealsCtx.removeFavorite(mealId)
+    } else {
+      favMealsCtx.addFavorite(mealFavorite)
+    }
   }
 
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => {
-        return <IconButton icon='star' color='white' onPress={headerPress} />
+        return (
+          <IconButton
+            icon={mealFavorite ? 'star' : 'star-outline'}
+            color='white'
+            onPress={changeFavStat} />
+        )
       }
     })
   }, [navigation, headerPress])
